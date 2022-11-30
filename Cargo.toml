@@ -1,5 +1,9 @@
 [package]
-name = "fetch"
+name = "hypofetch"
+authors = ["shykeiichi <mail@keii.dev>"]
+homepage = "https://github.com/shykeiichi/hypofetch"
+readme = "README.md"
+description = "A criminally fast and simple system info fetching tool"
 version = "0.1.0"
 edition = "2021"
 
