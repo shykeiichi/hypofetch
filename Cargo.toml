@@ -4,6 +4,7 @@ authors = ["shykeiichi <mail@keii.dev>"]
 homepage = "https://github.com/shykeiichi/hypofetch"
 readme = "README.md"
 description = "A criminally fast and simple system info fetching tool"
+categories = ["command-line-utilities"]
 version = "0.1.0"
 edition = "2021"
 

@@ -32,8 +32,8 @@ fn main() {
     let color_bold: String = color.replace("0", "1");
     let color_reset: String = String::from("\x1b[0;0m");
 
-    println!(" {}{}   {}{}{} {}@{}", color, distro["art"][0].as_str().unwrap(), &color_bold, "USER", color_reset, whoami::username(), whoami::hostname());
-    println!(" {}{}   {}{}{} {}"   , color, distro["art"][1].as_str().unwrap(), &color_bold, "  OS", color_reset, whoami::distro());
-    println!(" {}{}   {}{}{} {}"   , color, distro["art"][2].as_str().unwrap(), &color_bold, "  WM", color_reset, var("DESKTOP_SESSION").unwrap());
-    println!(" {}{}   {}{}{} {}"   , color, distro["art"][3].as_str().unwrap(), &color_bold, "  UP", color_reset, format_duration(uptime_lib::get().unwrap()));
+    println!(" {}{}   {}{}{} {}@{}", color, distro["small"][0].as_str().unwrap(), &color_bold, "\x1b[f007", color_reset, whoami::username(), whoami::hostname());
+    println!(" {}{}   {}{}{} {}"   , color, distro["small"][1].as_str().unwrap(), &color_bold, "  OS", color_reset, whoami::distro());
+    println!(" {}{}   {}{}{} {}"   , color, distro["small"][2].as_str().unwrap(), &color_bold, "  WM", color_reset, var("DESKTOP_SESSION").unwrap());
+    println!(" {}{}   {}{}{} {}"   , color, distro["small"][3].as_str().unwrap(), &color_bold, "  UP", color_reset, format_duration(uptime_lib::get().unwrap()));
 }
