@@ -13,6 +13,3 @@ edition = "2021"
 
 [dependencies]
 whoami = "1.2.3"
-uptime_lib = "0.2.2"
-humantime = "2.1.0"
-json = "0.12.4"
