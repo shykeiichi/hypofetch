@@ -1,39 +1,51 @@
 use whoami;
-use humantime::format_duration;
-use std::env::var;
-use json;
-use std::env;
 use std::fs;
-extern crate uptime_lib;
+use std::env::var;
+mod logo;
+
+fn get_time() -> String {
+    let mut uptime: f64 = fs::read_to_string("/proc/uptime").unwrap().split(" ").map(|item| item.to_string()).collect::<Vec<String>>()[0].as_str().parse::<f64>().unwrap();
+    let mut uptime_str: String = "".to_string();
+
+    let days: f64 = uptime as f64 / 60.0 / 60.0 / 24.0;
+    if days >= 1.0 {
+        uptime_str.push_str(&format!("{} Days ", days as i32));
+        uptime -= days * 24.0 * 60.0 * 60.0;
+    }
+
+    let hours: f64 = uptime / 60.0 / 60.0;
+    if hours >= 1.0 {
+        uptime_str.push_str(&format!("{} Hours ", hours as i32));
+        uptime -= (hours as i32 * 60 * 60) as f64;
+    }
+
+    let minutes: f64 = uptime / 60.0;
+    if minutes >= 1.0 {
+        uptime_str.push_str(&format!("{} Minutes ", minutes as i32));
+        uptime -= (minutes as i32 * 60) as f64;
+    }
+
+    uptime_str.push_str(&format!("{} Seconds", uptime as i32));
+    uptime_str
+}
 
 fn main() {
-    let distro_text: String;
-    if env::args().collect::<Vec<String>>().len() >= 2 {
-        distro_text = fs::read_to_string(format!("/home/{}/.config/hypo/distro/{}", whoami::username(), env::args().collect::<Vec<String>>()[1])).unwrap();
-    } else {
-        distro_text = fs::read_to_string(format!("/home/{}/.config/hypo/distro/{}", whoami::username(), whoami::distro().replace(" ", "_"))).unwrap();
-    }
-    let distro: json::JsonValue = json::parse(&distro_text).unwrap();
+    get_time();
 
-    let color: &str;
+    let distro: logo::Logos;
 
-    match distro["color"].as_str().unwrap() {
-        "black" => color = "\x1b[0;30m",
-        "red" => color = "\x1b[0;31m",
-        "green" => color = "\x1b[0;32m",
-        "yellow" => color = "\x1b[0;33m",
-        "blue" => color = "\x1b[0;34m",
-        "magenta" => color = "\x1b[0;35m",
-        "cyan" => color = "\x1b[0;36m",
-        "white" => color = "\x1b[0;37m",
-        _ => color = ""
-    }
+    match whoami::distro().as_str() {
+        "Arch Linux" => distro = logo::Logos::ArchLinux,
+        "Ubuntu" => distro = logo::Logos::Ubuntu,
+        "Fedora" => distro = logo::Logos::Fedora,
+        _ => distro = logo::Logos::ArchLinux
+    };
 
-    let color_bold: String = color.replace("0", "1");
-    let color_reset: String = String::from("\x1b[0;0m");
-
-    println!(" {}{}   {}{}{} {}@{}", color, distro["small"][0].as_str().unwrap(), &color_bold, "\x1b[f007", color_reset, whoami::username(), whoami::hostname());
-    println!(" {}{}   {}{}{} {}"   , color, distro["small"][1].as_str().unwrap(), &color_bold, "  OS", color_reset, whoami::distro());
-    println!(" {}{}   {}{}{} {}"   , color, distro["small"][2].as_str().unwrap(), &color_bold, "  WM", color_reset, var("DESKTOP_SESSION").unwrap());
-    println!(" {}{}   {}{}{} {}"   , color, distro["small"][3].as_str().unwrap(), &color_bold, "  UP", color_reset, format_duration(uptime_lib::get().unwrap()));
+    println!("            ╭────────╮");
+    println!(" {}   \x1b[0;0m│ \x1b[1;31m User \x1b[0;0m│ {}\x1b[1m@\x1b[0m{}", logo::get_logo(&distro)[0], whoami::username(), whoami::hostname());
+    println!(" {}   \x1b[0;0m│ \x1b[1;33m   OS \x1b[0;0m│ {}",    logo::get_logo(&distro)[1], whoami::distro());
+    println!(" {}   \x1b[0;0m│ \x1b[1;36m   WM \x1b[0;0m│ {}",    logo::get_logo(&distro)[2], var("XDG_CURRENT_DESKTOP").unwrap().as_str());
+    println!(" {}   \x1b[0;0m│ \x1b[1;34m   UP \x1b[0;0m│ {}",    logo::get_logo(&distro)[3], get_time());
+    println!("            ╰────────╯");
 }
+
