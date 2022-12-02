@@ -9,23 +9,23 @@ fn get_time() -> String {
 
     let days: f64 = uptime as f64 / 60.0 / 60.0 / 24.0;
     if days >= 1.0 {
-        uptime_str.push_str(&format!("{} Days ", days as i32));
+        uptime_str.push_str(&format!("{}d ", days as i32));
         uptime -= days * 24.0 * 60.0 * 60.0;
     }
 
     let hours: f64 = uptime / 60.0 / 60.0;
     if hours >= 1.0 {
-        uptime_str.push_str(&format!("{} Hours ", hours as i32));
+        uptime_str.push_str(&format!("{}h ", hours as i32));
         uptime -= (hours as i32 * 60 * 60) as f64;
     }
 
     let minutes: f64 = uptime / 60.0;
     if minutes >= 1.0 {
-        uptime_str.push_str(&format!("{} Minutes ", minutes as i32));
+        uptime_str.push_str(&format!("{}m ", minutes as i32));
         uptime -= (minutes as i32 * 60) as f64;
     }
 
-    uptime_str.push_str(&format!("{} Seconds", uptime as i32));
+    uptime_str.push_str(&format!("{}s ", uptime as i32));
     uptime_str
 }
 
