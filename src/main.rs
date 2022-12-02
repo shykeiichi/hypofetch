@@ -1,10 +1,10 @@
-use whoami;
+
 use std::fs;
 use std::env::var;
 mod logo;
 
 fn get_time() -> String {
-    let mut uptime: f64 = fs::read_to_string("/proc/uptime").unwrap().split(" ").map(|item| item.to_string()).collect::<Vec<String>>()[0].as_str().parse::<f64>().unwrap();
+    let mut uptime: f64 = fs::read_to_string("/proc/uptime").unwrap().split(' ').map(|item| item.to_string()).collect::<Vec<String>>()[0].as_str().parse::<f64>().unwrap();
     let mut uptime_str: String = "".to_string();
 
     let days: f64 = uptime as f64 / 60.0 / 60.0 / 24.0;
@@ -32,13 +32,11 @@ fn get_time() -> String {
 fn main() {
     get_time();
 
-    let distro: logo::Logos;
-
-    match whoami::distro().as_str() {
-        "Arch Linux" => distro = logo::Logos::ArchLinux,
-        "Ubuntu" => distro = logo::Logos::Ubuntu,
-        "Fedora" => distro = logo::Logos::Fedora,
-        _ => distro = logo::Logos::ArchLinux
+    let distro: logo::Logos = match whoami::distro().as_str() {
+        "Arch Linux" => logo::Logos::ArchLinux,
+        "Ubuntu" => logo::Logos::Ubuntu,
+        "Fedora" => logo::Logos::Fedora,
+        _ => logo::Logos::ArchLinux
     };
 
     println!("            ╭────────╮");
