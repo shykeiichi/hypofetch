@@ -5,6 +5,7 @@ macro_rules! vec_of_strings {
 pub enum Logos {
     ArchLinux,
     Ubuntu,
+    Windows,
     Unknown(String)
 }
 
@@ -20,6 +21,11 @@ pub fn get(logo: &Logos) -> Vec<String> {
             "\x1b[0;31m〇     |",
             "\x1b[0;31m|      |",
             "\x1b[0;31m \\__〇/ "],
-        Logos::Unknown(distro) => vec_of_strings!["Distro not implemented", distro, "", ""]
+        Logos::Windows => vec_of_strings![
+            "\x1b[0;34m|‾‾|‾‾| ",
+            "\x1b[0;34m|  |  | ",
+            "\x1b[0;34m|‾‾|‾‾| ",
+            "\x1b[0;34m|__|__| "],
+        Logos::Unknown(distro) => vec_of_strings!["Distro  ", "err     ", distro, "        "]
     }
 }
