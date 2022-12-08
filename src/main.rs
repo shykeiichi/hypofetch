@@ -1,5 +1,6 @@
 extern crate uptime_lib;
 mod logo;
+use std::env::var;
 
 fn get_time() -> String {
     let mut uptime = match uptime_lib::get() {
@@ -17,7 +18,7 @@ fn get_time() -> String {
     let days: f64 = uptime as f64 / 60.0 / 60.0 / 24.0;
     if days >= 1.0 {
         uptime_str.push_str(&format!("{}d ", days as i32));
-        uptime -= days * 24.0 * 60.0 * 60.0;
+        uptime -= f64::from(days as i32 * 24 * 60 * 60);
     }
 
     let hours: f64 = uptime / 60.0 / 60.0;
